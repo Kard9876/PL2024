@@ -1,5 +1,28 @@
 import sys
 
+def chaveOrd(s):
+    s = s.lower()
+
+    special_chars = {
+        'á': 'a',
+        'à': 'a',
+        'â': 'a',
+        'ã': 'a',
+        'é': 'e',
+        'ê': 'e',
+        'í': 'i',
+        'ó': 'o',
+        'ô': 'o',
+        'õ': 'o',
+        'ú': 'u',
+        'ç': 'c',
+    }
+
+    for special, default in special_chars.items():
+        s = s.replace(special, default)
+
+    return s
+
 val = True
 
 modalidades = set()
@@ -52,20 +75,28 @@ for line in sys.stdin:
     else:
         atletas_inaptos += 1
 
-print(f"Atletas aptos: {'100%' if atletas_total == 0 else str((atletas_aptos / atletas_total) * 100)}%")
-print(f"Atletas inaptos: {'0%' if atletas_total == 0 else str((atletas_inaptos / atletas_total)*100)}%")
+print(f"Atletas aptos: {'100' if atletas_total == 0 else str((atletas_aptos / atletas_total) * 100)}%")
+print(f"Atletas inaptos: {'0' if atletas_total == 0 else str((atletas_inaptos / atletas_total)*100)}%")
 print()
 
 modalidades = list(modalidades)
 
-modalidades.sort()
+modalidades.sort(key = chaveOrd)
 
 print(f"Modalidades: {modalidades}")
 print()
 
+escaloes_str = "Escalões: {"
+
 while idade_min <= idade_max:
-    print(f"{idade_min}-{idade_min+4}: {(escaloes.get(idade_min, 0) / atletas_total) * 100}% ({escaloes.get(idade_min, 0)} atletas)")
+    escaloes_str += f"{idade_min}-{idade_min+4}: {(escaloes.get(idade_min, 0) / atletas_total) * 100}% ({escaloes.get(idade_min, 0)} atletas)"
     
     idade_min += 5
 
+    if idade_min <= idade_max:
+        escaloes_str += ", "
+
+escaloes_str += "}"
+
+print(escaloes_str)
 print()
