@@ -1,0 +1,21 @@
+**Somador de Números com Controle "ON" e "OFF"**
+
+Bem-vindo ao nosso somador especial! Este programa permite que você some números com base nas palavras-chave "ON" e "OFF". Vamos entender como funciona:
+
+1. Quando você digitar uma sequência contendo "ON" (em qualquer combinação de maiúsculas e minúsculas), o somador ativará o modo de soma. Todos os números subsequentes serão somados.
+2. Se você encontrar a sequência "OFF" (novamente, independentemente das letras maiúsculas ou minúsculas), o somador desativará o modo de soma. Os números seguintes não serão incluídos na soma.
+3. Quando você inserir o sinal "=", o somador exibirá a soma atual.
+
+Aqui estão alguns exemplos de uso:
+
+- Digite "ON" para ativar o modo de soma.
+- Em seguida, insira os números: 10, 5, 8, 3. O somador somará esses números e exibirá a soma.
+- Agora, digite "OFF" para desativar o modo de soma.
+- Insira mais números: 15, 20, 12. Esses números não serão somados.
+- Novamente, digite "ON" para reativar o modo de soma.
+- Insira mais números: 7, 9, 11. O somador incluirá esses números na soma.
+- Finalmente, digite "=" para ver a soma total.
+
+Experimente e divirta-se somando! 🧮
+
+Lembre-se de adaptar esse texto conforme necessário para incorporá-lo ao seu programa. Boa sorte! 🌟
