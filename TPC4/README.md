@@ -41,4 +41,4 @@ Para além disso, as terminais variáveis identificadas são:
 - `FIELD`, que corresponde aos nomes que identificam as colunas das tabelas (combinações de letras que não formem uma palavra reservada);
 - `NUMBER`, que inclui números inteiros e reais.
 
-O script faz utilização da biblioteca **ply** para obter os resultados desejados e, por isso, possui o regex equivalente aos símbolos indicados, além de apresentar duas funções, uma que conta o número da linha e outra que indica quando aparece algum caracter inválido. Por fim, dada uma string multi linha com alguns testes, o script utiliza o **lex** do módulo **lex** da biblioteca anteriormente referida para identificar os diversos símbolos terminais da string.
+O script faz utilização da biblioteca **ply** para obter os resultados desejados e, por isso, possui o regex equivalente aos símbolos indicados, além de apresentar duas funções, uma que conta o número da linha e outra que indica quando aparece algum caracter inválido. Por fim, dada uma string multi linha com alguns testes, o script utiliza o módulo **lex** da biblioteca anteriormente referida para identificar os diversos símbolos terminais da string.
