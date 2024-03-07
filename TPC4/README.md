@@ -22,6 +22,7 @@ Para implementar a proposta foi desenvolvido um [script](lexical_analyzer.py) em
 - `-`,
 - `*`,
 - `/`,
+- `SKIP`[^1]
 
 definem o conjunto de sinais aceites e a lista de palavras reservadas definida é constituída por:
 
@@ -37,8 +38,11 @@ definem o conjunto de sinais aceites e a lista de palavras reservadas definida �
 
 Para além disso, as terminais variáveis identificadas são:
 
-- `SKIP`, que corresponde a um espaço;
-- `FIELD`, que corresponde aos nomes que identificam as colunas das tabelas (combinações de letras que não formem uma palavra reservada);
+- `FIELD`, que corresponde aos nomes[^2] que identificam as colunas ou as tabelas. Pode ser um `FIELD_NAME` ou um `TABLE_NAME`[^3], o que indica que se trata do nome de uma coluna ou tabela, respetivamente;
 - `NUMBER`, que inclui números inteiros e reais.
 
-O script faz utilização da biblioteca **ply** para obter os resultados desejados e, por isso, possui o regex equivalente aos símbolos indicados, além de apresentar duas funções, uma que conta o número da linha e outra que indica quando aparece algum caracter inválido. Por fim, dada uma string multi linha com alguns testes, o script utiliza o módulo **lex** da biblioteca anteriormente referida para identificar os diversos símbolos terminais da string.
+O script faz utilização da biblioteca **ply** para obter os resultados desejados e, por isso, possui o regex e funções equivalente aos símbolos indicados, além de apresentar duas funções, uma que conta o número da linha e outra que indica quando aparece algum caracter inválido. Por fim, dada uma string multi linha com alguns testes, o script utiliza o módulo **lex** da biblioteca anteriormente referida para identificar os diversos símbolos terminais da string.
+
+[^1]: que corresponde a um espaço
+[^2]: combinações de letras que não formem uma palavra reservada
+[^3]: Dependente de contexto

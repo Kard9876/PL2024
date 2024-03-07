@@ -25,20 +25,78 @@ tokens = (
     'DIVIDE',
     'SKIP',
     'FIELD',
-    'NUMBER'
+    'NUMBER',
+    'FIELD_NAME',
+    'TABLE_NAME'
 )
+
+prev_val = ""
 
 # Simple tokens' regex
 
-t_SELECT = r'SELECT'
-t_UPDATE = r'UPDATE'
-t_CREATE = r'CREATE'
-t_FROM = r'FROM'
-t_WHERE = r'WHERE'
-t_SET = r'SET'
+def t_SELECT(t):
+    r'SELECT'
+
+    global prev_val
+    prev_val = "FIELD_NAME"
+
+    return t
+
+def t_UPDATE(t):
+    r'UPDATE'
+
+    global prev_val
+    prev_val = "TABLE_NAME"
+
+    return t
+
+def t_FROM(t):
+    r'FROM'
+
+    global prev_val
+    prev_val = "TABLE_NAME"
+
+    return t
+
+def t_WHERE(t):
+    r'WHERE'
+
+    global prev_val
+    prev_val = "FIELD_NAME"
+
+    return t
+
+def t_SET(t):
+    r'SET'
+
+    global prev_val
+    prev_val = "FIELD_NAME"
+
+    return t
+
+def t_TABLE(t):
+    r'TABLE'
+
+    global prev_val
+    prev_val = "TABLE_NAME"
+
+    return t
+
+def t_NUMBER(t):
+    r'[+\-]?\d+(\.\d+)?'
+
+    return t
+
+def t_FIELD(t):
+    r'\w+'
+
+    global prev_val
+    t.type = prev_val
+
+    return t
+
 t_DROP = r'DROP'
-t_DELETE = r'DELETE'
-t_TABLE = r'TABLE'
+t_CREATE = r'CREATE'
 t_GREATER = r'>'
 t_LESSER = r'<'
 t_EQUALS = r'='
@@ -51,8 +109,6 @@ t_MINUS = r'-'
 t_TIMES = r'\*'
 t_DIVIDE = r'/'
 t_SKIP = r'\s'
-t_FIELD = r'\w+'
-t_NUMBER = r'[+\-]?\d+(\.\d+)?'
 
 # Rule to keep track of line numbers
 def t_newline(t):
