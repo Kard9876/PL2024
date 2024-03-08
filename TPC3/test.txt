@@ -13,7 +13,7 @@ Aqui estão alguns exemplos de uso:
 - Agora, digite "OFF" para desativar o modo de soma.
 - Insira mais números: 15, 20, 12. Esses números não serão somados.
 - Novamente, digite "ON" para reativar o modo de soma.
-- Insira mais números: 7, 9, 11. O somador incluirá esses números na soma.
+- Insira mais números: +7, -9, 11.3. O somador incluirá esses números na soma.
 - Finalmente, digite "=" para ver a soma total.
 
 Experimente e divirta-se somando! 🧮

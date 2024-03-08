@@ -2,16 +2,19 @@ import ply.lex as lex
 import re
 
 # List of tokens names (required)
-tokens = (
-    'SELECT',
-    'UPDATE',
-    'CREATE',
-    'FROM',
-    'WHERE',
-    'SET',
-    'DROP',
-    'DELETE',
-    'TABLE',
+reserved_words = {
+    "select" : 'SELECT',
+    "update" : 'UPDATE',
+    "create" : 'CREATE',
+    "from" : 'FROM',
+    "where" : 'WHERE',
+    "set" : 'SET',
+    "drop" : 'DROP',
+    "delete" : 'DELETE',
+    "table" : 'TABLE'
+}
+
+tokens = [
     'GREATER',
     'LESSER',
     'EQUALS',
@@ -28,57 +31,32 @@ tokens = (
     'NUMBER',
     'FIELD_NAME',
     'TABLE_NAME'
-)
-
-prev_val = ""
+] + list(reserved_words.values())
 
 # Simple tokens' regex
 
-def t_SELECT(t):
-    r'SELECT'
+def keyword_type(t):
+    match t.type:
+        case "SELECT":
+            t.lexer.prev_val = "FIELD_NAME"
 
-    global prev_val
-    prev_val = "FIELD_NAME"
+        case "UPDATE":
+            t.lexer.prev_val = "TABLE_NAME"
 
-    return t
+        case "FROM":
+            t.lexer.prev_val = "TABLE_NAME"
 
-def t_UPDATE(t):
-    r'UPDATE'
+        case "WHERE":
+            t.lexer.prev_val = "FIELD_NAME"
 
-    global prev_val
-    prev_val = "TABLE_NAME"
+        case "SET":
+            t.lexer.prev_val = "FIELD_NAME"
 
-    return t
+        case "TABLE":
+            t.lexer.prev_val = "TABLE_NAME"
 
-def t_FROM(t):
-    r'FROM'
-
-    global prev_val
-    prev_val = "TABLE_NAME"
-
-    return t
-
-def t_WHERE(t):
-    r'WHERE'
-
-    global prev_val
-    prev_val = "FIELD_NAME"
-
-    return t
-
-def t_SET(t):
-    r'SET'
-
-    global prev_val
-    prev_val = "FIELD_NAME"
-
-    return t
-
-def t_TABLE(t):
-    r'TABLE'
-
-    global prev_val
-    prev_val = "TABLE_NAME"
+        case _ : 
+            print("Error applying keyword type")
 
     return t
 
@@ -90,8 +68,10 @@ def t_NUMBER(t):
 def t_FIELD(t):
     r'\w+'
 
-    global prev_val
-    t.type = prev_val
+    t.type = reserved_words.get(t.value.lower(), t.lexer.prev_val)
+
+    if t.type != t.lexer.prev_val:
+        t = keyword_type(t)
 
     return t
 
@@ -123,8 +103,10 @@ def t_error(t):
 # Build lexer
 lexer = lex.lex()
 
+lexer.prev_val = ""
+
 test_data = """
-    SELECT id, nome, salario FROM empregados WHERE salário >= 820;
+    Select id, nome, salario FROM empregados WHERE salário >= 820;
     UPDATE Empregados SET salário = 1000 WHERE salário < 1000;
 """
 
