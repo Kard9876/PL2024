@@ -1,4 +1,4 @@
-# TPC3: Analisador Léxico
+# TPC5: Máquina de Vendas
 ## 2024-03-08
 
 ## Autor:
