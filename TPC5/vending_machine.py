@@ -2,27 +2,31 @@ import ply.lex as lex
 
 import sys
 import re
+import json
 
 class Vending_Machine(object):
     states = [
         ('LISTING', 'inclusive'),
         ('INPUT', 'inclusive'),
         ('SELECT', 'inclusive'),
-        ('LEAVE', 'inclusive')
+        ('LEAVE', 'inclusive'),
+        ('ADD', 'inclusive')
     ]
 
     keyword_states = {
         "LISTAR": "LISTING",
         "SELECIONAR": "SELECT",
         "MOEDA": "INPUT",
-        "SAIR": "LEAVE"
+        "SAIR": "LEAVE",
+        "ADICIONAR": "ADD"
     }
 
     reserverd_words = {
         "listar": "LISTAR",
         "selecionar": "SELECIONAR",
         "moeda": "MOEDA",
-        "sair": "SAIR"
+        "sair": "SAIR",
+        "adicionar": "ADICIONAR"
     }
 
     tokens = [
@@ -33,20 +37,9 @@ class Vending_Machine(object):
         'COIN'
     ] + list(reserverd_words.values())
     
-    def __init__(self):
+    def __init__(self, produtos):
         self.saldo = 0
-        self.produtos = {
-            "1": ("água", "50c"),
-            "2": ("bolo", "1.50e"),
-            "3": ("sandes mista", "1.00e"),
-            "4": ("snickers", "2.00e"),
-            "5": ("ice tea", "80c"),
-            "6": ("coca cola", "1.20e"),
-            "7": ("lays", "1.40e"),
-            "8": ("kit kat", "1.30e"),
-            "9": ("red bull", "1.50e"),
-            "10": ("tuna sandwich", "1.25e")
-        }
+        self.produtos = produtos
 
         self.leave = False
     
@@ -58,23 +51,35 @@ class Vending_Machine(object):
 
         return cur
     
+    def get_saldo(self):
+        return f"Saldo= {'%0.0f'%(self.saldo,) + 'c' if self.saldo < 100 else '%0.2f'%(self.saldo / 100,) + 'e'}"
+    
     def process_request(self, opt):
         produto = self.produtos.get(opt, "Invalido")
 
         if produto == "Invalido":
-            print("A máquina não possui o prodruto desejado")
+            print("A máquina não possui o prodruto desejado.")
+            print(f"maq: {self.get_saldo()}")
+
+        elif produto[2] <= 0:
+            print("A máquina não possui quantidade suficiente do prodruto desejado.")
+            print(f"maq: {self.get_saldo()}")
+
         else: 
-            val = self.coin_value(produto[1])
+            val = produto[1]
 
             if self.saldo - val < 0:
-                print("Saldo insuficiente")
+                print("maq: Saldo insufuciente para satisfazer o seu pedido")
+                print(f"maq: {self.get_saldo()}; Pedido = {produto[1]}")
 
             else:
                 print("Compra bem sucedida")
                 self.saldo -= val
+                self.produtos[opt] = (produto[0], produto[1], produto[2]-1)
+                
+                print(f'maq: Pode retirar o produto dispensado "{produto[0]}"')
+                print(f"maq: {self.get_saldo()}")
 
-        print(produto[0], produto[1])
-        print(f"Saldo: {'%0.0f'%(self.saldo,) + 'c' if self.saldo < 100 else '%0.2f'%(self.saldo / 100,) + 'e'}")
 
     def return_change(self):
         troco = {}
@@ -132,9 +137,9 @@ class Vending_Machine(object):
             troco[coin] = count
 
         for (k, v) in troco.items():
-            troco_str += f"{k}: {v}\t"
+            troco_str += f"{v}x {k}    "
 
-        print(f"Troco: {troco_str}")
+        print(f"Pode retirar o troco: {troco_str}")
         pass
     
     def t_INPUT_NUMBER(self, t):
@@ -182,8 +187,10 @@ class Vending_Machine(object):
         r'\n+'
         t.lexer.lineno += len(t.value)
 
+        print("maq:")
+
         for (k, v) in self.produtos.items():
-            print(f"{k}: {v[0]}({v[1]})")
+            print(f"Cod: {k},  Nome: {v[0]},  Quantidade: {v[2]},  Preço:{'%0.0f'%(v[1],) + 'c' if v[1] < 100 else '%0.2f'%(v[1] / 100,) + 'e'}")
 
         t.lexer.begin('INITIAL')
     
@@ -211,7 +218,53 @@ class Vending_Machine(object):
 
         t.lexer.begin('INITIAL')
 
-    t_ignore  = ' \t'
+    def t_ADD_KEYWORD(self, t):
+        r'.+'
+
+        t.value = re.sub(r',', r' ', t.value)
+        t.value = re.sub(r'\s+', r' ', t.value)
+
+        tmp_words = re.split(r'(\s|(\"|\').*?(\"|\'))', t.value)
+
+        words = []
+
+        for w in tmp_words:
+            if w:
+                w = w.replace('\'', '')
+                w = w.replace('"', '')
+                
+                if w and re.search(r'^(\s*"?\'?)*$', w) is None:
+
+                    words.append(w)
+
+        if len(words) == 2:
+            prod = self.produtos.get(words[0], "Inválido")
+
+            if prod == "Inválido":
+                print("maq: O código do produto a adicionar não existe")
+
+            else:
+                print("maq: Produto adicionado com sucesso")
+                self.produtos[words[0]] = (prod[0], prod[1], prod[2] + int(words[1]))
+
+        elif len(words) == 4:
+            print("maq: Produto adicionado com sucesso")
+            self.produtos[words[0]] = (words[1], float(words[2]) * 100, int(words[3]))
+
+        else:
+            print("maq: Número incorreto de argumentos.")
+            print("maq: ADICIONAR [Cod Quant | Cod Nome Preco Quant]")
+            print(words)
+
+        return t
+    
+    def t_ADD_newline(self, t):
+        r'\n+'
+        t.lexer.lineno += len(t.value)
+
+        t.lexer.begin('INITIAL')
+
+    t_ignore  = ' \t,'
 
     def t_error(self, t):
         print("Illegal character '%s'" % t.value[0])
@@ -227,12 +280,43 @@ class Vending_Machine(object):
 
             for _ in self.lexer:
                 pass
-            #    print(tok)
 
             if self.leave:
-                exit(0)
+                return self.produtos
 
-vending_machine = Vending_Machine()
 
-vending_machine.build()
-vending_machine.run()
+def main(args):
+    json_file = open(args[1], 'rt')
+
+    json_db = json.load(json_file)
+
+    json_file.close()
+
+    produtos = {}
+
+    for reg in json_db["produtos"]:
+        produtos[reg["cod"]] = (reg["nome"], reg["preco"] * 100, reg["quant"])
+
+    vending_machine = Vending_Machine(produtos)
+
+    vending_machine.build()
+    produtos = vending_machine.run()
+
+    json_db["produtos"] = []
+
+    for (k, v) in produtos.items():
+        json_db["produtos"].append({
+            "cod": k,
+            "nome": v[0], 
+            "preco": v[1] / 100,
+            "quant": v[2]
+        })
+
+    json_file = open(args[1], 'wt')
+
+    json.dump(json_db, json_file, ensure_ascii=False)
+
+    json_file.close()
+
+if __name__ == "__main__":
+    main(sys.argv)
