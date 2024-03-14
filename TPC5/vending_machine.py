@@ -53,6 +53,9 @@ class Vending_Machine(object):
     
     def get_saldo(self):
         return f"Saldo= {'%0.0f'%(self.saldo,) + 'c' if self.saldo < 100 else '%0.2f'%(self.saldo / 100,) + 'e'}"
+
+    def prod_val(self, prod_val):
+        return f"{'%0.0f'%(prod_val,) + 'c' if prod_val < 100 else '%0.2f'%(prod_val / 100,) + 'e'}"
     
     def process_request(self, opt):
         produto = self.produtos.get(opt, "Invalido")
@@ -70,7 +73,7 @@ class Vending_Machine(object):
 
             if self.saldo - val < 0:
                 print("maq: Saldo insufuciente para satisfazer o seu pedido")
-                print(f"maq: {self.get_saldo()}; Pedido = {produto[1]}")
+                print(f"maq: {self.get_saldo()}; Pedido = {self.prod_val(produto[1])}")
 
             else:
                 print("Compra bem sucedida")
@@ -286,37 +289,40 @@ class Vending_Machine(object):
 
 
 def main(args):
-    json_file = open(args[1], 'rt')
+    if len(args) < 2:
+        print("Not enough arguments. Please insert the filename of the stock's json.")
+    else :
+        json_file = open(args[1], 'rt')
 
-    json_db = json.load(json_file)
+        json_db = json.load(json_file)
 
-    json_file.close()
+        json_file.close()
 
-    produtos = {}
+        produtos = {}
 
-    for reg in json_db["produtos"]:
-        produtos[reg["cod"]] = (reg["nome"], reg["preco"] * 100, reg["quant"])
+        for reg in json_db["stock"]:
+            produtos[reg["cod"]] = (reg["nome"], reg["preco"] * 100, reg["quant"])
 
-    vending_machine = Vending_Machine(produtos)
+        vending_machine = Vending_Machine(produtos)
 
-    vending_machine.build()
-    produtos = vending_machine.run()
+        vending_machine.build()
+        produtos = vending_machine.run()
 
-    json_db["produtos"] = []
+        json_db["stock"] = []
 
-    for (k, v) in produtos.items():
-        json_db["produtos"].append({
-            "cod": k,
-            "nome": v[0], 
-            "preco": v[1] / 100,
-            "quant": v[2]
-        })
+        for (k, v) in produtos.items():
+            json_db["stock"].append({
+                "cod": k,
+                "nome": v[0], 
+                "preco": v[1] / 100,
+                "quant": v[2]
+            })
 
-    json_file = open(args[1], 'wt')
+        json_file = open(args[1], 'wt')
 
-    json.dump(json_db, json_file, ensure_ascii=False)
+        json.dump(json_db, json_file, ensure_ascii=False)
 
-    json_file.close()
+        json_file.close()
 
 if __name__ == "__main__":
     main(sys.argv)

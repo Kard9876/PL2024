@@ -11,6 +11,7 @@ A proposta do quinto projeto desenvolvido no contexto desta UC é a desenvolver,
 
 - `LISTING`, o qual é `inclusive` e que não espera mais nenhum tipo de token
 - `INPUT`, que é `inclusive` e espera que, de seguida, sejam indicadas as moedas que serão inseridas (cada moeda deve ser seguida de um `e` [euro] ou de um `c`)
-- `SELECT`, o qual é `inclusive`
-- `LEAVE`, também `inclusive`
+- `SELECT`, o qual é `inclusive` e deve ser acompanhado da lista de produtos que o utilizador deseja comprar
+- `ADD`, o qual também é `inclusive`, deve ser acompanhado por ou `id_prod quant` ou `id_prod nome_prod preço quant` e permite a adição de stock à máquina
+- `LEAVE`, também `inclusive` e termina a execução do programa
 

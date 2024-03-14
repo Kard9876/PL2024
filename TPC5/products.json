@@ -1,5 +1,5 @@
 {
-    "produtos": [
+    "stock": [
         {
             "cod": "1",
             "nome": "água",
@@ -52,7 +52,7 @@
             "cod": "9",
             "nome": "red bull",
             "preco": 1.5,
-            "quant": 5
+            "quant": 4
         },
         {
             "cod": "10",
@@ -70,7 +70,7 @@
             "cod": "12",
             "nome": "lays camponesas",
             "preco": 1.6,
-            "quant": 3
+            "quant": 2
         }
     ]
 }
