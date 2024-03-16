@@ -27,21 +27,22 @@ T = {`?`, `!`, `=`, `+`, `-`, `*`, `/`, `num`, `id_var`}
 N = {S, Value, Exp, Termo, Fator}
 
 S = S
-
+```
 p = {
- &nbsp;&nbsp;&nbsp;p1: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;S → `?` Exp
- &nbsp;&nbsp;&nbsp;p2: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| `!` Exp
- &nbsp;&nbsp;&nbsp;p3: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| `id_var` `=` Exp
- &nbsp;&nbsp;&nbsp;p4: &nbsp;&nbsp;&nbsp;&nbsp;Exp → Termo `+` Exp
- &nbsp;&nbsp;&nbsp;p5: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| Termo `-` Exp
- &nbsp;&nbsp;&nbsp;p6: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| Termo
- &nbsp;&nbsp;&nbsp;p7: Termo → Fator `*` Termo
- &nbsp;&nbsp;&nbsp;p8: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| Fator `/` Termo
- &nbsp;&nbsp;&nbsp;p9: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| Fator
- &nbsp;&nbsp;&nbsp;p10: Fator → `(` Exp `)`
- &nbsp;&nbsp;p11: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| num
- &nbsp;&nbsp;p12: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| id_var
+    p1:      S → `?` Exp
+    p2:        | `!` Exp
+    p3:        | `id_var` `=` Exp
+    p4:    Exp → Termo `+` Exp
+    p5:        | Termo `-` Exp
+    p6:        | Termo
+    p7:  Termo → Fator `*` Termo
+    p8:        | Fator `/` Termo
+    p9:        | Fator
+    p10: Fator → `(` Exp `)`
+    p11:       | num
+    p12:       | id_var
 }
+```
 
 ### Gramática Independente de Contexto final
 
@@ -53,22 +54,24 @@ N = {S, Value, Exp, Exp2, Termo, Termo2, Fator}
 
 S = Z
 
+```
 p = {
-    &nbsp;&nbsp;&nbsp; p1: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;S → `?` Exp
-    &nbsp;&nbsp;&nbsp; p2: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| `!` Exp
-    &nbsp;&nbsp;&nbsp; p3: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| `id_var` `=` Exp
-    &nbsp;&nbsp;&nbsp; p4: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Exp → Termo Exp2
-    &nbsp;&nbsp;&nbsp; p5: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Exp2 → `+` Exp
-    &nbsp;&nbsp;&nbsp; p6: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| `-` Exp
-    &nbsp;&nbsp;&nbsp; p7: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| ε
-    &nbsp;&nbsp;&nbsp; p8: &nbsp;&nbsp;Termo → Fator Termo2
-    &nbsp;&nbsp;&nbsp; p9: Termo2 → `*` Termo
-    &nbsp;&nbsp;&nbsp; p10: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| `/` Termo
-    &nbsp;&nbsp;&nbsp; p11: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| ε
-    &nbsp;&nbsp;&nbsp; p12: &nbsp;&nbsp;Fator → `(` Exp `)`
-    &nbsp;&nbsp;&nbsp; p13: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| num
-    &nbsp;&nbsp;&nbsp; p14: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| id_var
+        p1:      S → `?` Exp
+        p2:        | `!` Exp
+        p3:        | `id_var` `=` Exp
+        p4:    Exp → Termo Exp2
+        p5:   Exp2 → `+` Exp
+        p6:        | `-` Exp
+        p7:        | ε
+        p8:  Termo → Fator Termo2
+        p9: Termo2 → `*` Termo
+        p10:       | `/` Termo
+        p11:       | ε
+        p12: Fator → `(` Exp `)`
+        p13:       | num
+        p14:       | id_var
 }
+```
 
 ### Look Ahead
 
