@@ -22,25 +22,27 @@ O objetivo deste sexto trabalho da UC de *Processamento de Linguagens* foi o de 
 
 A gramática seguinte possui ambiguidade, porém serviu para derivar a gramática final.
 
-T = {`?`, `!`, `=`, `+`, `-`, `*`, `/`, `num`, `id_var`}
+T = {`?`, `!`, `=`, `+`, `-`, `*`, `/`, `num`, `id_var`, `\n`}
 
 N = {S, Value, Exp, Termo, Fator}
 
 S = S
 ```
 p = {
-    p1:      S → `?` Exp
-    p2:        | `!` Exp
-    p3:        | `id_var` `=` Exp
-    p4:    Exp → Termo `+` Exp
-    p5:        | Termo `-` Exp
-    p6:        | Termo
-    p7:  Termo → Fator `*` Termo
-    p8:        | Fator `/` Termo
-    p9:        | Fator
-    p10: Fator → `(` Exp `)`
-    p11:       | num
-    p12:       | id_var
+    p1:          S → `?` Exp Separador
+    p2:            | `!` Exp Separador
+    p3:            | `id_var` `=` Exp Separador
+    p4:        Exp → Termo `+` Exp
+    p5:            | Termo `-` Exp
+    p6:            | Termo
+    p7:      Termo → Fator `*` Termo
+    p8:            | Fator `/` Termo
+    p9:            | Fator
+    p10:     Fator → `(` Exp `)`
+    p11:           | num
+    p12:           | id_var
+    p13: Separador → `\n` Separador S 
+    p14:           | ε
 }
 ```
 
@@ -48,7 +50,7 @@ p = {
 
 Para obter esta gramática apenas se colocou em evidência os prefixos comuns, criando assim mais símbolos não-terminais.
 
-T = {`?`, `!`, `=`, `+`, `-`, `*`, `/`, `num`, `id_var`}
+T = {`?`, `!`, `=`, `+`, `-`, `*`, `/`, `num`, `id_var`, `\n`}
 
 N = {S, Value, Exp, Exp2, Termo, Termo2, Fator}
 
@@ -56,20 +58,23 @@ S = Z
 
 ```
 p = {
-        p1:      S → `?` Exp
-        p2:        | `!` Exp
-        p3:        | `id_var` `=` Exp
-        p4:    Exp → Termo Exp2
-        p5:   Exp2 → `+` Exp
-        p6:        | `-` Exp
-        p7:        | ε
-        p8:  Termo → Fator Termo2
-        p9: Termo2 → `*` Termo
-        p10:       | `/` Termo
-        p11:       | ε
-        p12: Fator → `(` Exp `)`
-        p13:       | num
-        p14:       | id_var
+        p1:          S → `?` Exp Separador
+        p2:            | `!` Exp Separador
+        p3:            | `id_var` `=` Exp Separador
+        p4:            | ε
+        p5:        Exp → Termo Exp2
+        p6:       Exp2 → `+` Exp
+        p7:            | `-` Exp
+        p8:            | ε
+        p9:      Termo → Fator Termo2
+        p10:     Termo2 → `*` Termo
+        p11:           | `/` Termo
+        p12:           | ε
+        p13:     Fator → `(` Exp `)`
+        p14:           | num
+        p15:           | id_var
+        p16: Separador → `\n` Separador S 
+        p17:           | ε
 }
 ```
 
@@ -81,34 +86,42 @@ LA(p2) = {`!`}
 
 LA(p3) = {`id_var`}
 
-LA(p4) = FirstN(Termo) = FirstN(Fator) = {`(`, `num`, `id_var`}
+LA(p4) = Follow(S) = {`$`}
 
-LA(p5) = {`+`}
+LA(p5) = FirstN(Termo) = FirstN(Fator) = {`(`, `num`, `id_var`}
 
-LA(p6) = {`-`}
+LA(p6) = {`+`}
 
-LA(p7) = Follow(Exp2) = Follow(Exp) = {`)`} U Follow(S) = {`)`, `$`}
+LA(p7) = {`-`}
 
-LA(p8) = FirstN(Fator) = {`(`, `num`, `id_var`}
+LA(p8) = Follow(Exp2) = Follow(Exp) = {`)`} U FirstN(Separador) = {`)`, `\n`} U Follow(Separador) = {`)`, `\n`} U Follow(S) = {`)`, `\n`, `$`}
 
-LA(p9) = {`*`}
+LA(p9) = FirstN(Fator) = {`(`, `num`, `id_var`}
 
-LA(p10) = {`/`}
+LA(p10) = {`*`}
 
-LA(p11) = Follow(Termo2) = Follow(Termo) = FirstN(Exp2) = {`+`, `-`} U Follow(Exp2) = {`+`, `-`} U Follow(Exp) = {`+`, `-`, `)`} U Follow(S) = {`+`, `-`, `)`, `$`}
+LA(p11) = {`/`}
 
-LA(p12) = {`(`}
+LA(p12) = Follow(Termo2) = Follow(Termo) = FirstN(Exp2) = {`+`, `-`} U Follow(Exp2) = {`+`, `-`} U Follow(Exp) = {`+`, `-`, `)`} U FirstN(Separador) = {`+`, `-`, `)`, `\n`} U Follow(Separador) = {`+`, `-`, `)`, `\n`} U Follow(S) = {`+`, `-`, `)`, `\n`, `$`}
 
-LA(p13) = {`num`}
+LA(p13) = {`(`}
 
-LA(p14) = {`id_var`}
+LA(p14) = {`num`}
+
+LA(p15) = {`id_var`}
+
+LA(p16) = {`\n`}
+
+LA(p17) = Follow(Separador) = Follow(S) = {`$`}
 
 #### Verificar que interseção dos Look Ahead é o conjunto vazio
 
 - LA(p1) ∩ LA(p2) ∩ LA(p3) = {`?`} ∩ {`!`} ∩ {`id_var`} = {}
 
-- LA(p5) ∩ LA(p6) ∩ LA(p7) = {`+`} ∩ {`-`} ∩ {`)`, `$`} = {}
+- LA(p6) ∩ LA(p7) ∩ LA(p8) = {`+`} ∩ {`-`} ∩ {`)`, `\n`, `$`} = {}
 
-- LA(p9) ∩ LA(p10) ∩ LA(p11) = {`*`} ∩ {`/`} ∩ {`+`, `-`, `)`, `$`} = {}
+- LA(p10) ∩ LA(p11) ∩ LA(p12) = {`*`} ∩ {`/`} ∩ {`+`, `-`, `)`, `\n`, `$`} = {}
 
-- LA(p12) ∩ LA(p13) ∩ LA(p14) = {`(`} ∩ {`num`} ∩ {`id_var`} = {}
+- LA(p13) ∩ LA(p14) ∩ LA(p15) = {`(`} ∩ {`num`} ∩ {`id_var`} = {}
+
+- LA(p16) ∩ LA(p17) = {`\n`} ∩ {`$`} = {}
