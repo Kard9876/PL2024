@@ -94,7 +94,7 @@ LA(p6) = {`+`}
 
 LA(p7) = {`-`}
 
-LA(p8) = Follow(Exp2) = Follow(Exp) = {`)`} U FirstN(Separador) = {`)`, `\n`} U Follow(Separador) = {`)`, `\n`} U Follow(S) = {`)`, `\n`, `$`}
+LA(p8) = Follow(Exp2) = Follow(Exp) = {`)`} U FirstN(Separador) = {`)`, `\n`} U Follow(Separador) = {`)`, `\n`} U FirstN(S) U Follow(S) = {`)`, `\n`, `?`, `!`, `id_var`, `$`}
 
 LA(p9) = FirstN(Fator) = {`(`, `num`, `id_var`}
 
@@ -102,7 +102,7 @@ LA(p10) = {`*`}
 
 LA(p11) = {`/`}
 
-LA(p12) = Follow(Termo2) = Follow(Termo) = FirstN(Exp2) = {`+`, `-`} U Follow(Exp2) = {`+`, `-`} U Follow(Exp) = {`+`, `-`, `)`} U FirstN(Separador) = {`+`, `-`, `)`, `\n`} U Follow(Separador) = {`+`, `-`, `)`, `\n`} U Follow(S) = {`+`, `-`, `)`, `\n`, `$`}
+LA(p12) = Follow(Termo2) = Follow(Termo) = FirstN(Exp2) = {`+`, `-`} U Follow(Exp2) = {`+`, `-`} U Follow(Exp) = {`+`, `-`, `)`} U FirstN(Separador) = {`+`, `-`, `)`, `\n`} U Follow(Separador) = {`+`, `-`, `)`, `\n`} U FirstN(S) U Follow(S) = {`+`, `-`, `)`, `\n`, `?`, `!`, `id_var`, `$`}
 
 LA(p13) = {`(`}
 
@@ -112,15 +112,16 @@ LA(p15) = {`id_var`}
 
 LA(p16) = {`\n`}
 
-LA(p17) = Follow(Separador) = Follow(S) = {`$`}
+LA(p17) = Follow(Separador) = FirstN(S) U Follow(S) = {`?`, `!`, `id_var`, `$`}
 
 #### Verificar que interseção dos Look Ahead é o conjunto vazio
 
 - LA(p1) ∩ LA(p2) ∩ LA(p3) = {`?`} ∩ {`!`} ∩ {`id_var`} = {}
 
-- LA(p6) ∩ LA(p7) ∩ LA(p8) = {`+`} ∩ {`-`} ∩ {`)`, `\n`, `$`} = {}
+- LA(p6) ∩ LA(p7) ∩ LA(p8) = {`+`} ∩ {`-`} ∩ {`)`, `\n`, `?`, `!`, `id_var`, `$`} = {}
 
-- LA(p10) ∩ LA(p11) ∩ LA(p12) = {`*`} ∩ {`/`} ∩ {`+`, `-`, `)`, `\n`, `$`} = {}
+- LA(p10) ∩ LA(p11) ∩ LA(p12) = {`*`} ∩ {`/`} ∩ {`+`, `-`, `)`, `\n`, `?`, `!`, `id_var`, `$`}
+ = {}
 
 - LA(p13) ∩ LA(p14) ∩ LA(p15) = {`(`} ∩ {`num`} ∩ {`id_var`} = {}
 
