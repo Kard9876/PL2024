@@ -22,16 +22,16 @@ O objetivo deste sexto trabalho da UC de *Processamento de Linguagens* foi o de 
 
 A gramática seguinte possui ambiguidade, porém serviu para derivar a gramática final.
 
-T = {`?`, `!`, `=`, `+`, `-`, `*`, `/`, `num`, `id_var`, `\n`}
+T = {`?`, `!`, `=`, `+`, `-`, `*`, `/`, `num`, `id_var`}
 
-N = {S, Value, Exp, Termo, Fator}
+N = {S, Exp, Termo, Fator}
 
 S = S
 ```
 p = {
-    p1:          S → `?` Exp Separador
-    p2:            | `!` Exp Separador
-    p3:            | `id_var` `=` Exp Separador
+    p1:          S → `?` Exp S
+    p2:            | `!` Exp S
+    p3:            | `id_var` `=` Exp S
     p4:        Exp → Termo `+` Exp
     p5:            | Termo `-` Exp
     p6:            | Termo
@@ -41,8 +41,6 @@ p = {
     p10:     Fator → `(` Exp `)`
     p11:           | num
     p12:           | id_var
-    p13: Separador → `\n` Separador S 
-    p14:           | ε
 }
 ```
 
@@ -50,17 +48,17 @@ p = {
 
 Para obter esta gramática apenas se colocou em evidência os prefixos comuns, criando assim mais símbolos não-terminais.
 
-T = {`?`, `!`, `=`, `+`, `-`, `*`, `/`, `num`, `id_var`, `\n`}
+T = {`?`, `!`, `=`, `+`, `-`, `*`, `/`, `num`, `id_var`}
 
-N = {S, Value, Exp, Exp2, Termo, Termo2, Fator}
+N = {S, Exp, Exp2, Termo, Termo2, Fator}
 
 S = Z
 
 ```
 p = {
-        p1:          S → `?` Exp Separador
-        p2:            | `!` Exp Separador
-        p3:            | `id_var` `=` Exp Separador
+        p1:          S → `?` Exp S
+        p2:            | `!` Exp S
+        p3:            | `id_var` `=` Exp S
         p4:            | ε
         p5:        Exp → Termo Exp2
         p6:       Exp2 → `+` Exp
@@ -73,8 +71,6 @@ p = {
         p13:     Fator → `(` Exp `)`
         p14:           | num
         p15:           | id_var
-        p16: Separador → `\n` Separador S 
-        p17:           | ε
 }
 ```
 
@@ -110,10 +106,6 @@ LA(p14) = {`num`}
 
 LA(p15) = {`id_var`}
 
-LA(p16) = {`\n`}
-
-LA(p17) = Follow(Separador) = FirstN(S) U Follow(S) = {`?`, `!`, `id_var`, `$`}
-
 #### Verificar que interseção dos Look Ahead é o conjunto vazio
 
 - LA(p1) ∩ LA(p2) ∩ LA(p3) = {`?`} ∩ {`!`} ∩ {`id_var`} = {}
@@ -124,5 +116,3 @@ LA(p17) = Follow(Separador) = FirstN(S) U Follow(S) = {`?`, `!`, `id_var`, `$`}
  = {}
 
 - LA(p13) ∩ LA(p14) ∩ LA(p15) = {`(`} ∩ {`num`} ∩ {`id_var`} = {}
-
-- LA(p16) ∩ LA(p17) = {`\n`} ∩ {`$`} = {}
