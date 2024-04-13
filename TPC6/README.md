@@ -109,7 +109,7 @@ LA(p15) = {`id_var`}
 
 #### Verificar que interseção dos Look Ahead é o conjunto vazio
 
-- LA(p1) ∩ LA(p2) ∩ LA(p3) = {`?`} ∩ {`!`} ∩ {`id_var`} = {}
+- LA(p1) ∩ LA(p2) ∩ LA(p3) ∩ LA(p4) = {`?`} ∩ {`!`} ∩ {`id_var`} ∩ {`$`} = {}
 
 - LA(p6) ∩ LA(p7) ∩ LA(p8) = {`+`} ∩ {`-`} ∩ {`)`, `\n`, `?`, `!`, `id_var`, `$`} = {}
 
