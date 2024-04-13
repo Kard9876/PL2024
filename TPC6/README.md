@@ -32,15 +32,16 @@ p = {
     p1:          S → `?` Exp S
     p2:            | `!` Exp S
     p3:            | `id_var` `=` Exp S
-    p4:        Exp → Termo `+` Exp
-    p5:            | Termo `-` Exp
-    p6:            | Termo
-    p7:      Termo → Fator `*` Termo
-    p8:            | Fator `/` Termo
-    p9:            | Fator
-    p10:     Fator → `(` Exp `)`
-    p11:           | num
-    p12:           | id_var
+    p4:            | ε
+    p5:        Exp → Termo `+` Exp
+    p6:            | Termo `-` Exp
+    p7:            | Termo
+    p8:      Termo → Fator `*` Termo
+    p9:            | Fator `/` Termo
+    p10:            | Fator
+    p11:     Fator → `(` Exp `)`
+    p12:           | num
+    p13:           | id_var
 }
 ```
 
